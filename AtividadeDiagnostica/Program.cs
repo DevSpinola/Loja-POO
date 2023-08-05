@@ -20,6 +20,7 @@ Dictionary<int, Produto> listaProdutos = new()
 List<Cliente> clientesRegistrados = new();
 bool logado = false;
 
+
 void ExibirBoasVindas(string nome)
 {
     Console.WriteLine($"Bem vindo à loja {nome}!");
@@ -31,21 +32,91 @@ void ExibirTelaDeRegistro()
     string nome = Console.ReadLine()!;
     Console.Write("Digite seu CPF:");
     string cpf = Console.ReadLine()!;
-    Console.Write("Digite sua senha");
-    string senha = Console.ReadLine()!;
-    clientesRegistrados.Add(new(nome, cpf, senha));
+    string senha1, senha2; // 2 Variaveis de senha para fazer a confirmacao
+
+    do // este laco faz com que a senha digita nao apareca na tela
+    {
+        Console.WriteLine("Digite sua senha:");
+        string senhaTemp = "";
+        ConsoleKeyInfo key;
+        do
+        {
+            key = Console.ReadKey(true);
+
+            // Verifica se a tecla pressionada é diferente da tecla "Enter"
+            if (key.Key != ConsoleKey.Enter)
+            {
+                senhaTemp += key.KeyChar;
+                Console.Write("*");
+            }
+
+        } while (key.Key != ConsoleKey.Enter);// encerra o laco se o usuario apertar enter
+
+        senha1 = senhaTemp;
+
+        Console.WriteLine();
+        Console.WriteLine("Confirme sua senha:"); // Faz a mesma coisa para poder confirmar a senha
+        senhaTemp = "";
+
+        do
+        {
+            key = Console.ReadKey(true);
+
+
+            if (key.Key != ConsoleKey.Enter)
+            {
+                senhaTemp += key.KeyChar;
+                Console.Write("*");
+            }
+
+        } while (key.Key != ConsoleKey.Enter);
+
+        senha2 = senhaTemp;
+        Console.WriteLine();
+
+        // Verifica se as senhas sao iguais
+        if (senha1 != senha2)
+        {
+            Console.WriteLine("As senhas nao correspondem, digite novamente");
+        }
+
+    } while (senha1 != senha2); // Se a senha nao bater refaz o laco
+
+    Console.WriteLine("Senha cadastrada com sucesso");
+    Thread.Sleep(1500); // Espera 1,5 segundos antes de continuar a execução
+    Console.Clear(); // Limpa a tela do console
+    clientesRegistrados.Add(new(nome, cpf, senha1));
     ExibirBoasVindas(nome);
-    logado= true;
+    logado = true;
 }
 void ExibirTelaDeLogin()
 {
     Console.Write("Digite seu nome:");
     string nome = Console.ReadLine()!;
-    Console.Write("Digite sua senha");
-    string senha = Console.ReadLine()!;
+    Console.WriteLine("Digite sua senha:");
+    string senha = "";
+    ConsoleKeyInfo key;
+    do
+    {
+        key = Console.ReadKey(true);
+
+        // Verifica se a tecla pressionada é diferente da tecla "Enter"
+        if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Backspace)
+        {
+            senha += key.KeyChar;
+            Console.Write("*");
+        }
+        /*else if(key.Key == ConsoleKey.Backspace)
+        {
+            senha = senha.Substring(senha.Length - 1);
+            Console.Write() 
+        }
+        */
+    } while (key.Key != ConsoleKey.Enter);// encerra o laco se o usuario apertar enter    
+
     if (clientesRegistrados.Any(a => a.Nome.Equals(nome) && a.Senha.Equals(senha)))
     {
-        ExibirBoasVindas(nome); 
+        ExibirBoasVindas(nome);
         logado = true;
     }
     else
@@ -53,4 +124,34 @@ void ExibirTelaDeLogin()
         Console.WriteLine("Usuário não encontrado");
     }
 }
+void ExibirAbaRegistro()
+{
+    Console.WriteLine("Bem vindo à loja, para utilizar nossos serviços primeiro registre-se");
+    Console.WriteLine("Digite 1 para se registrar, caso já tenha cadastro digite 2");
+    int opcao = int.Parse(Console.ReadLine()!);
+
+    switch (opcao)
+    {
+        case 1:
+            ExibirTelaDeRegistro();
+            break;
+        case 2:
+            ExibirTelaDeLogin();
+            break;
+        default:
+            Console.WriteLine("Opcao Inválida");
+            break;
+    }
+    if (logado)
+    {
+        //  ExibirMenu();
+    }
+    else
+    {
+        ExibirAbaRegistro();
+    }
+}
+ExibirAbaRegistro();
+
+
 
