@@ -5,6 +5,7 @@ internal class Cliente
     public string Cpf { get; set; }
     public string Nome { get; set; }
     public string Senha { get; }
+    public bool logado { get; set; }
     public CarrinhoDeCompras Carrinho = new();
 
     public int QuantidadeProdutos => Carrinho.Produtos.Count;
