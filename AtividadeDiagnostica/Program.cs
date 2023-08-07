@@ -1,5 +1,5 @@
 ﻿using AtividadeDiagnostica.Modelos;
-using AtividadeDiagnostica.Registro;
+using AtividadeDiagnostica.Menus;
 
 Dictionary<int, Produto> listaProdutos = new()
 {
@@ -19,36 +19,58 @@ Dictionary<int, Produto> listaProdutos = new()
     {14, new Produto("Aveia")}
 };
 List<Cliente> clientesRegistrados = new();
+Cliente clienteAtual;
 
-Dictionary<int, MenuRegistro> opcoesRegistro = new()
+Dictionary<int, Menu> opcoesLoja = new()
 {
-    {1, new Registro() },
-    {2, new Login() }
+    { 1, new MenuAdicionarAoCarrinho() },
+    { 2, new MenuMostrarCarrinho() },
+    { -1, new MenuSair() }
 };
 
 
 void ExibirBoasVindas(string nome)
 {
+    Console.Clear();
     Console.WriteLine($"Bem vindo à loja {nome}!");
 }
 void ExibirAbaRegistro()
 {
     Console.Clear();
     Console.WriteLine("Bem vindo à loja, para utilizar nossos serviços primeiro registre-se");
-    Console.WriteLine("Digite 1 para se registrar, caso já tenha cadastro digite 2");
-    int opcao = int.Parse(Console.ReadLine()!);
-    if (opcoesRegistro.ContainsKey(opcao))
+    Console.WriteLine("Digite seu nome");
+    string nome = Console.ReadLine()!;
+    Console.WriteLine("Digite seu CPF");
+    string cpf = Console.ReadLine()!;
+    Console.WriteLine("Digite sua senha");
+    string senha = Console.ReadLine()!;
+    clienteAtual = new Cliente(nome, cpf, senha);
+    clientesRegistrados.Add(clienteAtual);
+}
+void ExibirMenus()
+{    
+    Console.WriteLine("Digite 1 para Adicionar Produtos ao Carrinho");
+    Console.WriteLine("Digite 2 para mostrar Produtos do Carrinho");
+    Console.WriteLine("Digite -1 para sair do programa");
+    int opcaoescolhida = int.Parse(Console.ReadLine()!);
+    if (opcoesLoja.ContainsKey(opcaoescolhida))
     {
-        MenuRegistro menuASerExibido = opcoesRegistro[opcao];
-        menuASerExibido.Executar(clientesRegistrados);
-    }   
-    else
-    {
-        Console.WriteLine("Opção Inválida");
-        ExibirAbaRegistro();
+        Menu menuAserExibido = opcoesLoja[opcaoescolhida];
+        menuAserExibido.Executar(listaProdutos, clienteAtual);
+        if(opcaoescolhida> 0)
+        {
+            ExibirMenus();
+        }
+        else
+        {
+            Console.WriteLine("Opção Inválida");
+        }
     }
 }
 ExibirAbaRegistro();
+ExibirBoasVindas(clienteAtual.Nome);
+ExibirMenus();
+
 
 
 
