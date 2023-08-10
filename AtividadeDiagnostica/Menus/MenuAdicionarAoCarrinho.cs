@@ -9,13 +9,13 @@ internal class MenuAdicionarAoCarrinho : Menu
         base.Executar(listaProdutos, clientelogado);
         ExibirTituloDaOpcao("Selecione o produto para adicionar ao Carrinho");
 
-        foreach (var item in listaProdutos)
+        foreach (var item in listaProdutos) // Exibe os produtos existentes
         {
             Console.WriteLine($"{item.Key} - {item.Value.Descricao}");
             
-        }
+        } 
         int produtoEscolhido = int.Parse(Console.ReadLine()!);
-        clientelogado.AdicionarProduto(listaProdutos.GetValueOrDefault(produtoEscolhido)!);
+        clientelogado.AdicionarProduto(listaProdutos.GetValueOrDefault(produtoEscolhido)!); // Adiciona o produto
         Console.WriteLine($"{listaProdutos[produtoEscolhido].Descricao} adicionado com sucesso!");
         Thread.Sleep(2000);
         Console.Clear();
