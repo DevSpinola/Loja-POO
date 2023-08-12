@@ -24,16 +24,17 @@ internal class Login : MenuRegistro
             }
 
         } while (key.Key != ConsoleKey.Enter);// encerra o laco se o usuario apertar enter    
-
+        Console.Clear();
         if (clientesRegistrados.Any(a => a.Nome.Equals(nome) && a.Senha.Equals(senha)))
         {
             clienteAtual = clientesRegistrados.First(a => a.Nome.Equals(nome) && a.Senha.Equals(senha));
-            clienteAtual.Logado = true;
+            clienteAtual.Logado = true;            
             return  clienteAtual;
         }
         else
         {
             Console.WriteLine("Usuário ou senha não correspondem");
+            Thread.Sleep(2000);
             return clienteAtual;
         }
     }

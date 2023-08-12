@@ -57,10 +57,11 @@ void ExibirAbaRegistro()
     {
         MenuRegistro menuAserExibido = opcoesRegistro[opcaoEscolhida];
         clienteAtual = menuAserExibido.Executar(clientesRegistrados, clienteAtual);
-        if (clienteAtual.Logado == false)
-        {
+
+        if (clienteAtual is null || clienteAtual.Logado == false )
+        {                       
             ExibirAbaRegistro(); // Exibe novamente o menu principal
-        }
+        }      
         else
         {
             ExibirBoasVindas(clienteAtual.Nome);
@@ -91,6 +92,10 @@ void ExibirMenus()
         if (opcaoEscolhida > 0)
         {
             ExibirMenus(); // Exibe novamente o menu principal
+        }
+        else if (opcaoEscolhida == -1)
+        {
+            ExibirAbaRegistro();
         }
         else
         {
